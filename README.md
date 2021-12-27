@@ -4,7 +4,7 @@ This is a RESTful API with two endpoints, where:
 - Second endpoint is a create(POST) and fetch(GET) data from an in-memory storage.
 
 
-## Pre requsites
+## Prerequisites
 - Golang (tested on version 1.75.5) for the application and Unit Tests
 
 https://go.dev/doc/install
