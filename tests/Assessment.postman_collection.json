@@ -1,0 +1,815 @@
+{
+	"info": {
+		"_postman_id": "a5251436-f214-4561-b4a8-25e3f884e1a9",
+		"name": "Assessment",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Getir",
+			"item": [
+				{
+					"name": "Memory",
+					"item": [
+						{
+							"name": "Fetch Memory Error - No content",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 204\", function () {",
+											"  pm.response.to.have.status(204);",
+											"});",
+											"",
+											"pm.test(\"Content-Type header is application/json\", () => {",
+											"  pm.expect(pm.response.headers.get('Content-Type')).to.be.undefined;",
+											"});",
+											"",
+											"pm.test(\"The response code should not have body\", () => {",
+											"    pm.expect(pm.response.text()).to.be.empty;",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:8080/v1/memory?key=active-tabs",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"v1",
+										"memory"
+									],
+									"query": [
+										{
+											"key": "key",
+											"value": "active-tabs"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Fetch Memory Error - No Key",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 422\", function () {",
+											"  pm.response.to.have.status(422);",
+											"});",
+											"",
+											"pm.test(\"Content-Type header is application/json\", () => {",
+											"  pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json');",
+											"});",
+											"",
+											"pm.test(\"The response code should be 10\", () => {",
+											"    const responseJson = pm.response.json();",
+											"    pm.expect(responseJson.code).to.be.a('number');",
+											"    pm.expect(responseJson.code).to.eql(10);",
+											"});",
+											"",
+											"pm.test(\"The response message should be a string\", () => {",
+											"    const responseJson = pm.response.json();",
+											"    pm.expect(responseJson.message).to.be.a('string');",
+											"    pm.expect(responseJson.message).to.eql(\"Key value not found\");",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:8080/v1/memory?key=",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"v1",
+										"memory"
+									],
+									"query": [
+										{
+											"key": "key",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Add Memory",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 201\", function () {",
+											"  pm.response.to.have.status(201);",
+											"});",
+											"",
+											"pm.test(\"Content-Type header is application/json\", () => {",
+											"  pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json');",
+											"});",
+											"",
+											"pm.test(\"The response key should be a string\", () => {",
+											"    const responseJson = pm.response.json();",
+											"    pm.expect(responseJson.key).to.be.a('string');",
+											"    pm.expect(responseJson.key).to.eql(\"active-tabs\");",
+											"});",
+											"",
+											"pm.test(\"The response value should be a string\", () => {",
+											"    const responseJson = pm.response.json();",
+											"    pm.expect(responseJson.value).to.be.a('string');",
+											"    pm.expect(responseJson.value).to.eql(\"getir\");",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"key\"   : \"active-tabs\", \n    \"value\" : \"getir\"\n}"
+								},
+								"url": {
+									"raw": "localhost:8080/v1/memory",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"v1",
+										"memory"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Add Memory Error - No Key",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 422\", function () {",
+											"  pm.response.to.have.status(422);",
+											"});",
+											"",
+											"pm.test(\"Content-Type header is application/json\", () => {",
+											"  pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json');",
+											"});",
+											"",
+											"pm.test(\"The response code should be 10\", () => {",
+											"    const responseJson = pm.response.json();",
+											"    pm.expect(responseJson.code).to.be.a('number');",
+											"    pm.expect(responseJson.code).to.eql(10);",
+											"});",
+											"",
+											"pm.test(\"The response message should be a string\", () => {",
+											"    const responseJson = pm.response.json();",
+											"    pm.expect(responseJson.message).to.be.a('string');",
+											"    pm.expect(responseJson.message).to.eql(\"Key value not found\");",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"key\"   : \"\", \n    \"value\" : \"getir\"\n}"
+								},
+								"url": {
+									"raw": "localhost:8080/v1/memory",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"v1",
+										"memory"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Add Memory Error - Duplicated",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 409\", function () {",
+											"  pm.response.to.have.status(409);",
+											"});",
+											"",
+											"pm.test(\"Content-Type header is application/json\", () => {",
+											"  pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json');",
+											"});",
+											"",
+											"pm.test(\"The response code should be 100\", () => {",
+											"    const responseJson = pm.response.json();",
+											"    pm.expect(responseJson.code).to.be.a('number');",
+											"    pm.expect(responseJson.code).to.eql(100);",
+											"});",
+											"",
+											"pm.test(\"The response message should be a string\", () => {",
+											"    const responseJson = pm.response.json();",
+											"    pm.expect(responseJson.message).to.be.a('string');",
+											"    pm.expect(responseJson.message).to.eql(\"Can not add the same key again\");",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"key\"   : \"active-tabs\", \n    \"value\" : \"getir\"\n}"
+								},
+								"url": {
+									"raw": "localhost:8080/v1/memory",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"v1",
+										"memory"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Add Memory Error - Incorrect Json",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 422\", function () {",
+											"  pm.response.to.have.status(422);",
+											"});",
+											"",
+											"pm.test(\"Content-Type header is application/json\", () => {",
+											"  pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json');",
+											"});",
+											"",
+											"pm.test(\"The response code should be 105\", () => {",
+											"    const responseJson = pm.response.json();",
+											"    pm.expect(responseJson.code).to.be.a('number');",
+											"    pm.expect(responseJson.code).to.eql(105);",
+											"});",
+											"",
+											"pm.test(\"The message should be a string\", () => {",
+											"    const responseJson = pm.response.json();",
+											"    pm.expect(responseJson.message).to.be.a('string');",
+											"    pm.expect(responseJson.message).to.eql(\"Incorrect json message\");",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"key\"   : \"active-tabs\"\n    \"value\" : \"getir\"\n}"
+								},
+								"url": {
+									"raw": "localhost:8080/v1/memory",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"v1",
+										"memory"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Add Memory Error - Json Not Found",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 422\", function () {",
+											"  pm.response.to.have.status(422);",
+											"});",
+											"",
+											"pm.test(\"Content-Type header is application/json\", () => {",
+											"  pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json');",
+											"});",
+											"",
+											"pm.test(\"The response code should be 110\", () => {",
+											"    const responseJson = pm.response.json();",
+											"    pm.expect(responseJson.code).to.be.a('number');",
+											"    pm.expect(responseJson.code).to.eql(110);",
+											"});",
+											"",
+											"pm.test(\"The message should be a string\", () => {",
+											"    const responseJson = pm.response.json();",
+											"    pm.expect(responseJson.message).to.be.a('string');",
+											"    pm.expect(responseJson.message).to.eql(\"Json message not found\");",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{}"
+								},
+								"url": {
+									"raw": "localhost:8080/v1/memory",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"v1",
+										"memory"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Fetch Memory",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"  pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Content-Type header is application/json\", () => {",
+											"  pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json');",
+											"});",
+											"",
+											"pm.test(\"The response key should be a string\", () => {",
+											"    const responseJson = pm.response.json();",
+											"    pm.expect(responseJson.key).to.be.a('string');",
+											"    pm.expect(responseJson.key).to.eql(\"active-tabs\");",
+											"});",
+											"",
+											"pm.test(\"The message value should be a string\", () => {",
+											"    const responseJson = pm.response.json();",
+											"    pm.expect(responseJson.value).to.be.a('string');",
+											"    pm.expect(responseJson.value).to.eql(\"getir\");",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "localhost:8080/v1/memory?key=active-tabs",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"v1",
+										"memory"
+									],
+									"query": [
+										{
+											"key": "key",
+											"value": "active-tabs"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Database",
+					"item": [
+						{
+							"name": "Fetch Database",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"  pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Content-Type header is application/json\", () => {",
+											"  pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json');",
+											"});",
+											"",
+											"pm.test(\"The response code should be 0\", () => {",
+											"    const responseJson = pm.response.json();",
+											"    pm.expect(responseJson.code).to.be.a('number');",
+											"    pm.expect(responseJson.code).to.eql(0);",
+											"});",
+											"",
+											"pm.test(\"The message should be a string\", () => {",
+											"    const responseJson = pm.response.json();",
+											"    pm.expect(responseJson.msg).to.be.a('string');",
+											"    pm.expect(responseJson.msg).to.eql(\"Success\");",
+											"});",
+											"",
+											"pm.test(\"The response records should not be null\", () => {",
+											"    const responseJson = pm.response.json();",
+											"    pm.expect(responseJson.records).to.not.be.a('null');",
+											"    pm.expect(responseJson.records).to.have.length.greaterThan(1);",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"startDate\": \"2016-01-29\",\n    \"endDate\"  : \"2016-01-29\",\n    \"minCount\" : 2300,\n    \"maxCount\" : 3000\n}"
+								},
+								"url": {
+									"raw": "localhost:8080/v1/database",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"v1",
+										"database"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Fetch Database Error - Date",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 422\", function () {",
+											"  pm.response.to.have.status(422);",
+											"});",
+											"",
+											"pm.test(\"Content-Type header is application/json\", () => {",
+											"  pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json');",
+											"});",
+											"",
+											"pm.test(\"The response code should be 1\", () => {",
+											"    const responseJson = pm.response.json();",
+											"    pm.expect(responseJson.code).to.be.a('number');",
+											"    pm.expect(responseJson.code).to.eql(1);",
+											"});",
+											"",
+											"pm.test(\"The message should be a string\", () => {",
+											"    const responseJson = pm.response.json();",
+											"    pm.expect(responseJson.msg).to.be.a('string');",
+											"    pm.expect(responseJson.msg).to.eql(\"End date need to be the same or greater than start date\");",
+											"});",
+											"",
+											"pm.test(\"The response records should be null\", () => {",
+											"    const responseJson = pm.response.json();",
+											"    pm.expect(responseJson.records).to.be.a('null');",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"startDate\": \"2016-01-29\",\n    \"endDate\"  : \"2016-01-28\",\n    \"minCount\" : 2300,\n    \"maxCount\" : 3000\n}"
+								},
+								"url": {
+									"raw": "localhost:8080/v1/database",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"v1",
+										"database"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Fetch Database Error - Count",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 422\", function () {",
+											"  pm.response.to.have.status(422);",
+											"});",
+											"",
+											"pm.test(\"Content-Type header is application/json\", () => {",
+											"  pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json');",
+											"});",
+											"",
+											"pm.test(\"The response code should be 5\", () => {",
+											"    const responseJson = pm.response.json();",
+											"    pm.expect(responseJson.code).to.be.a('number');",
+											"    pm.expect(responseJson.code).to.eql(5);",
+											"});",
+											"",
+											"pm.test(\"The message should be a string\", () => {",
+											"    const responseJson = pm.response.json();",
+											"    pm.expect(responseJson.msg).to.be.a('string');",
+											"    pm.expect(responseJson.msg).to.eql(\"minCount need to be greater than maxCount\");",
+											"});",
+											"",
+											"pm.test(\"The response records should be null\", () => {",
+											"    const responseJson = pm.response.json();",
+											"    pm.expect(responseJson.records).to.be.a('null');",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"startDate\": \"2016-01-29\",\n    \"endDate\"  : \"2016-01-30\",\n    \"minCount\" : 3200,\n    \"maxCount\" : 2300\n}"
+								},
+								"url": {
+									"raw": "localhost:8080/v1/database",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"v1",
+										"database"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Fetch Database Error - Incorrect Json",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 422\", function () {",
+											"  pm.response.to.have.status(422);",
+											"});",
+											"",
+											"pm.test(\"Content-Type header is application/json\", () => {",
+											"  pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json');",
+											"});",
+											"",
+											"pm.test(\"The response code should be 105\", () => {",
+											"    const responseJson = pm.response.json();",
+											"    pm.expect(responseJson.code).to.be.a('number');",
+											"    pm.expect(responseJson.code).to.eql(105);",
+											"});",
+											"",
+											"pm.test(\"The message should be a string\", () => {",
+											"    const responseJson = pm.response.json();",
+											"    pm.expect(responseJson.msg).to.be.a('string');",
+											"    pm.expect(responseJson.msg).to.eql(\"Incorrect json message\");",
+											"});",
+											"",
+											"pm.test(\"The response records should be null\", () => {",
+											"    const responseJson = pm.response.json();",
+											"    pm.expect(responseJson.records).to.be.a('null');",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"startDate\": \"2016-01-29\"\n    \"endDate\"  : \"2016-01-30\",\n    \"minCount\" : 2300,\n    \"maxCount\" : 3000\n}"
+								},
+								"url": {
+									"raw": "localhost:8080/v1/database",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"v1",
+										"database"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Fetch Database Error - Json Not Found",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 422\", function () {",
+											"  pm.response.to.have.status(422);",
+											"});",
+											"",
+											"pm.test(\"Content-Type header is application/json\", () => {",
+											"  pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json');",
+											"});",
+											"",
+											"pm.test(\"The response code should be 110\", () => {",
+											"    const responseJson = pm.response.json();",
+											"    pm.expect(responseJson.code).to.be.a('number');",
+											"    pm.expect(responseJson.code).to.eql(110);",
+											"});",
+											"",
+											"pm.test(\"The message should be a string\", () => {",
+											"    const responseJson = pm.response.json();",
+											"    pm.expect(responseJson.msg).to.be.a('string');",
+											"    pm.expect(responseJson.msg).to.eql(\"Json message not found\");",
+											"});",
+											"",
+											"pm.test(\"The response records should be null\", () => {",
+											"    const responseJson = pm.response.json();",
+											"    pm.expect(responseJson.records).to.be.a('null');",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{}"
+								},
+								"url": {
+									"raw": "localhost:8080/v1/database",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"v1",
+										"database"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "No route",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {",
+									"  pm.response.to.have.status(404);",
+									"});",
+									"",
+									"pm.test(\"Content-Type header is text/plain\", () => {",
+									"  pm.expect(pm.response.headers.get('Content-Type')).to.eql('text/plain; charset=utf-8');",
+									"});",
+									"",
+									"pm.test(\"The response code should be not found\", () => {",
+									"    console.log(pm.response.text())",
+									"    pm.expect(pm.response.text()).to.eql(\"404 page not found\\n\");",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

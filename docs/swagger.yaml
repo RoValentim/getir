@@ -1,0 +1,165 @@
+openapi: 3.0.0
+info:
+  title: Rodrigo Assignment For Getir
+  description: Simple RESTful API for mongodb and in memory data management.
+  version: 1.0.0
+tags:
+- name: "database"
+  description: "Manage MongoDB data"
+- name: "memory"
+  description: "Manage In-Memory data"
+paths:
+  /v1/database:
+    post:
+      tags:
+        - "database"
+      summary: Fetch data
+      description: Connect to MongoDB and fetch data from collection
+      requestBody:
+        description: >
+          A JSON object containing parameters. <br>
+          <b>startDate</b> - Initial date of the filter <br>
+          <b>endDate</b> - Up to date of the filter <br>
+          <b>minCount</b> - Minimum value of total counts that the record must have to be fetched <br>
+          <b>maxCount</b> - Maximum value of total counts that the record must have to be fetched <br>
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                startDate:
+                  type: string
+                  example: "2016-01-29"
+                endDate:
+                  type: string
+                  example: "2016-01-30"
+                minCount:
+                  type: integer
+                  example: 2300
+                maxCount:
+                  type: integer
+                  example: 3200
+      responses:
+        '200':    # status code
+          description: A JSON object of data that matches the request body filter.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Database"
+        '422':
+          description: Invalid request body or error validating the data for filtering..
+        '500':
+          description: There is an internal error.
+  /v1/memory:
+    get:
+      tags:
+        - "memory"
+      summary: Fetch data
+      description: Fetch data from in-memory storage
+      parameters:
+        - in: query
+          name: key
+          schema:
+            type: string
+          required: true
+          description: ID of the key for which data will be returned
+          example: "ba567a16"
+      responses:
+        '200':    # status code
+          description: A JSON object of data that matches the request query filter.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Memory"
+        '204':    # status code
+          description: Record not found for the required filter
+        '500':  #status code
+          description: Unexpected error
+    post:
+      tags:
+      - "memory"
+      summary: Add a record
+      description: Add a new record to the in-memory storage
+      requestBody:
+        description: >
+          A JSON object containing parameters. <br>
+          <b>key</b> - An unique identifier for the record <br>
+          <b>value</b> - Data for the record <br>
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                key:
+                  type: string
+                  example: "active-tabs"
+                value:
+                  type: string
+                  example: "getir"
+      responses:
+        '201':
+          description: Record has been created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Memory"
+        '409':
+          description: Field cannot be updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MemoryError"
+        '422':
+          description: Invalid request body or error with key data.
+components:
+  schemas:
+    Record:
+      properties:
+        key:
+          type: string
+          example: "ZpoHRnZT"
+          description: Key name of the record
+        createdAt:
+          type: string
+          example: "2016-01-29T13:18:38.649Z"
+          description: Creation date of the record in Zulu Time Zone
+        totalCount:
+          type: integer
+          example: 3000
+          description: Sum of all counts for the record
+    Database:
+      properties:
+        code:
+          type: integer
+          example: 0
+          description: Return code of the operation where only 0 mean success
+        msg:
+          type: string
+          example: "Success"
+          description: Return message of the operation
+        records:
+          type: array
+          items:
+            $ref: "#/components/schemas/Record"
+    Memory:
+      properties:
+        key:
+          type: string
+          example: "active-tabs"
+          description: Return the key of the record
+        value:
+          type: string
+          example: "getir"
+          description: Return the data of the record
+    MemoryError:
+      properties:
+        code:
+          type: integer
+          example: 100
+          description: Code of the error
+        message:
+          type: string
+          example: "Can not add the same key again"
+          description: Message of the error
